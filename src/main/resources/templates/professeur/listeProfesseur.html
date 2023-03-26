@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="fr" 
+ xmlns:th="http://www.thymeleaf.org"
+ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+ layout:decorate="~{layout}">
+<head>
+ <title th:text="#{professeur.liste.titre}"> Liste des professeurs</title>
+</head>
+
+<body>
+	<main class="container" layout:fragment="content">
+
+		<div class="row">
+			<div class="col">
+				<h3 th:text="#{professeur.liste.titre}"></h3>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col">
+				<div th:if="${!professeurList.isEmpty()}">
+					<table class="table">
+						<thead>
+							<tr>
+								<th th:text="#{professeur.id}"></th>
+								<th th:text="#{user.username}"></th>
+								<th th:text="#{professeur.nom}"></th>
+								<th th:text="#{professeur.prenom}"></th>
+								<th th:text="#{actionsCRUD}"></th>
+							</tr>
+						</thead>
+
+						<tbody >
+							<tr th:each="professeur: ${professeurList}" >
+								<td th:text="${professeur.id}"></td>
+								<td th:text="${professeur.user.username}"></td>
+								<td th:text="${professeur.nom}"></td>
+								<td th:text="${professeur.prenom}"></td>
+								<td><a 	sec:authorize="hasAnyRole({'ADMIN','PROF'})"
+										th:href="@{'/professeur/'+ ${professeur.id}}"> 
+								    <i
+										class="fa fa-eye"></i>
+									</a>
+<!-- 									<p>th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'') or hasRole(''ROLE_PROF'') and #vars.professeur.user.username eq getPrincipal().username')}"</p> -->
+									<a 
+										sec:authorize="hasRole('ADMIN') or hasRole('PROF') and #vars.professeur.user.username eq principal.username"
+									   th:href="@{'/professeur/'+ ${professeur.id} +'/update'}"> 
+								    <i
+										class="fa fa-pencil"></i>
+									</a>														
+							     <span 
+							       sec:authorize="hasRole('ADMIN')"
+								   th:msgDelete="#{msgConfirmDelete}"	
+								   th:lienDelete="@{'/professeur/'+ ${professeur.id}+'/delete'}"
+								   th:csrfToken="${#ctx.containsVariable('_csrf')}? ${_csrf.token}:''"		
+								   th:csrfName="${#ctx.containsVariable('_csrf')}? ${_csrf.parameterName}:'_csrf'"	
+								   th:onclick='javascript:
+								    var lien= this.getAttribute("lienDelete");
+								    var csrf={};
+								    csrf[this.getAttribute("csrfName")]=this.getAttribute("csrfToken");
+								    bootbox.confirm(this.getAttribute("msgDelete"),
+								    function(ok){
+								      if (ok){ post(lien,csrf);}
+								     })
+								    ' >
+								  <i class="fa fa-trash text-danger"></i>
+								</span>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div th:unless="${!professeurList.isEmpty()}" th:text="#{liste.vide}+' ('+#{professeur}+')'">
+					La liste des professeurs est vide
+				</div>
+			</div>
+		</div>
+		<div class="col">
+			<a sec:authorize="hasRole('ADMIN')" class="btn btn-outline-success" 
+			    th:href="@{/professeur/add}"
+				th:text="#{action.add}+' '+#{professeur}"></a>
+		</div>
+
+	</main>
+	<div layout:fragment="optional">
+	  <script th:src="@{/webjars/bootbox/bootbox.js}"></script>
+	  <script th:src="@{/js/myJS.js}"></script>
+	</div>
+</body>
+</html>
+

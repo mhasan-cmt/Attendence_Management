@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+ 	layout:decorate="~{layout}">
+<head>
+ <title th:text="#{cours.add}">Ajout/Modif du cours</title>
+ <meta charset="UTF-8">
+</head>
+
+<body>
+	<main class="container" layout:fragment="content">
+		<div class="row">
+			<div class="col-1">
+				<a th:href="@{/cours/liste}"><i class="fa fa-chevron-left"></i></a>
+			</div>
+			<div class="col-11">
+				<h3 th:text="#{cours.add}">Ajout d'un cours</h3>
+			</div>
+		</div>
+
+		<div th:errors="${cours.*}" class="border pl-3 bg-warning">Toutes les erreurs</div>
+		
+		<form method="post" th:object="${cours}" th:action="@{/cours/add}">
+			<div class="form-group">
+				<label for="code" th:text="#{cours.code}"></label> 
+				<input	type="text" th:field="*{code}" class="form-control" 
+						th:classappend="${#fields.hasErrors('code')} ? is-invalid" required />
+				<small id="error_code" th:errors="*{code}" class="form-text text-danger">Le code est invalide</small>
+			</div>
+			<div class="form-group">
+				<label for="nom" th:text="#{cours.nom}"></label> 
+				<input type="text" th:field="*{nom}" class="form-control"
+						th:classappend="${#fields.hasErrors('nom')} ? is-invalid" required />
+				<small id="error_nom" th:errors="*{nom}" class="form-text text-danger">Erreur Nom</small>
+			</div>
+			<div class="form-group">
+				<label for="nbPeriodes" th:text="#{cours.nbPeriodes}"></label>
+		 		<input	type="text" th:field="*{nbPeriodes}" class="form-control"
+		 				th:classappend="${#fields.hasErrors('nbPeriodes')} ? is-invalid" required /> 
+		 		<small id="error_nbPeriodes" th:errors="*{nbPeriodes}" class="form-text text-danger">Erreur nbPériodes</small>
+			</div>
+			<div class="form-group">				  						
+				<div class="custom-control custom-checkbox custom-control-inline" 
+					th:each="choixSection : ${listeDesSections}">						 
+					<input type="checkbox"  class="custom-control-input" value="Une Section"
+							th:field="*{sections}" th:value="${choixSection}"/> 
+					<label  class="custom-control-label"
+							th:for="${#ids.prev('sections')}" th:text="'&nbsp&nbsp'+${choixSection}">Info
+					</label>
+				</div>				
+				<small th:errors="*{sections}" class="form-text text-danger">Erreur Section</small>				
+			</div>
+			
+			<button type="submit" class="btn btn-outline-primary" th:text="#{action.add}">
+			</button>
+		</form>
+	</main>
+</body>
+</html>

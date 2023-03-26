@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" 
+ xmlns:th="http://www.thymeleaf.org"
+ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+ layout:decorate="~{layout}">
+<head>
+ <!-- Required meta tags for bootstrap-->
+ <meta charset="utf-8">
+ <meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+ <title>Home Page</title>
+
+</head>
+<body> 
+ <div layout:fragment="content" th:if="${username != null}">
+    <h1  th:text="#{home.bienvenu}+ ' : '  +${username}">
+			Bienvenu au cours de PID 
+	</h1>
+	<h2 th:text="#{home.titre}">un titre</h2>
+
+	<a th:href="@{/cours/liste}">Liste des cours</a><br/>
+	<a sec:authorize="hasAnyRole('PROF')" th:href="@{/seance/liste/__${username}__}">Prendre les présences </a>
+	<a sec:authorize="hasAnyRole('ADMIN', 'SECRETARIAT')" th:href="@{/certificat/add}">Encoder un CM</a>
+	
+	<p>
+		Locale: <span th:text=" ${#locale}">locale</span>
+	</p>
+	
+	<div class="d-inline-flex p-1 " th:classappend="${#authentication.name ne 'anonymousUser'}?'bg-success':'bg-warning'">
+	 <div class="p-2" sec:authentication="name" ></div>
+     <div class="p-2" sec:authentication="authorities"></div>
+    </div>
+    
+	<div th:insert="fragments/fragments.html:: message(Hello)">
+  Home
+ </div> 
+	
+ </div> 
+ 
+</body>
+</html>

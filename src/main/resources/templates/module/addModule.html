@@ -1,0 +1,87 @@
+
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+ 	layout:decorate="~{layout}">
+<head>
+ <title th:text="#{module.add}">Ajout/Modif du cours</title>
+ <meta charset="UTF-8">
+</head>
+
+<body>
+	<main class="container" layout:fragment="content">
+		<div class="row">
+			<div class="col-1">
+				<a th:href="@{/module/liste}"><i class="fa fa-chevron-left"></i></a>
+			</div>
+			<div class="col-11">
+				<h3 th:text="#{module.add}">Ajout d'un cours</h3>
+			</div>
+		</div>
+
+		<div th:errors="${module.*}" class="border pl-3 bg-warning">Toutes les erreurs</div>
+		
+		<form method="post" th:object="${module}" th:action="@{/module/add/__${module.coursCode}__}">
+			<div class="form-group">
+				<label for="coursCode" th:text="#{module.coursCode}"></label> 
+				<input readonly type="text" class="form-control" th:field="*{coursCode}"/>
+				<small id="error_code" th:errors="*{coursCode}" class="form-text text-danger">Le code est invalide</small>
+			</div>
+			<div class="form-group">
+				<label for="code" th:text="#{module.code}"></label> 
+				<input readonly type="text" th:field="*{code}" class="form-control" 
+						th:classappend="${#fields.hasErrors('code')} ? is-invalid" required />
+				<small id="error_code" th:errors="*{code}" class="form-text text-danger">Le code est invalide</small>
+			</div>
+			<div class="form-group">
+			    <label for="date_debut" th:text="#{module.date_debut}">Date de début</label>
+			    <input type="date" id="date_debut" name="date_debut" class="form-control" th:field="*{dateDebut}"/>
+			    <small id="error_date_debut" th:errors="*{dateDebut}" class="form-text text-danger"></small>
+			</div>
+			<div class="form-group">
+			    <label for="date_fin" th:text="#{module.date_fin}">Date de fin</label>
+			    <input type="date" id="date_fin" name="date_fin" class="form-control" th:field="*{dateFin}"/>
+			    <small id="error_date_fin" th:errors="*{dateFin}" class="form-text text-danger">La date de fin est invalide</small>
+			</div>
+			
+			<div class="form-group">
+			  <label for="profs" th:text="#{module.professeur}">Professeur</label>
+			  <select id="profs" class="form-control" th:field="*{profUsername}">
+			    <option th:each="prof : ${profs}"
+			            th:value="${prof}"
+			            th:text="${prof}"
+			            th:selected="${prof == selectedUsername}">
+			    </option>
+			    <!--option th:each="prof : ${profs}"
+			            th:value="${prof.user.username}"
+			            th:text="${prof.user.username}"
+			            th:selected="${prof.user.username == selectedUsername}">
+			    </option-->
+			  </select>
+			</div>
+			<div class="form-group">
+			  <label th:text="#{module.moment}">Moment du module</label><br>
+			  <div class="form-check form-check-inline">
+			    <input name="moment" class="form-check-input" type="checkbox" id="matin" value="MATIN" th:field="*{moment}"/>
+			    <label class="form-check-label" for="matin">MATIN</label>
+			  </div>
+			  <div class="form-check form-check-inline">
+			    <input name="moment" class="form-check-input" type="checkbox" id="apm" value="APM" th:field="*{moment}"/>
+			    <label class="form-check-label" for="apm">APM</label>
+			  </div>
+			  <div class="form-check form-check-inline">
+			    <input name="moment" class="form-check-input" type="checkbox" id="soir" value="SOIR" th:field="*{moment}"/>
+			    <label class="form-check-label" for="soir">SOIR</label>
+			  </div>
+			</div>
+			<button type="submit" class="btn btn-outline-primary" th:text="#{action.add}">
+			</button>
+		</form>
+	</main>
+	<div layout:fragment="optional">
+	  <script th:src="@{/webjars/bootbox/bootbox.js}"></script>
+	  <script th:src="@{/js/module.js}"></script>
+	  <!--script th:src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script-->
+	</div>
+</body>
+</html>

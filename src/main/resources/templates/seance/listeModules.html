@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org" 
+ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+ layout:decorate="~{layout}"
+ >
+<head >
+<title th:text="#{module.liste.titre}"> Liste des modules</title>
+</head>
+
+<body>
+	<main class="container" layout:fragment="content">
+
+		<div class="row">
+			<div class="col">
+				<h3 th:text="#{module.liste.titre}"></h3>
+			</div>
+		</div>
+
+		<div class="row" sec:authorize="hasAnyRole('PROF')">
+			<div class="col">
+				<div th:if="${!modulesList.isEmpty()}">
+					<table class="table">
+						<thead>
+							<tr>
+								<th th:text="#{module.code}"></th>
+								<th th:text="#{module.date_debut}"></th>
+								<th th:text="#{module.date_fin}"></th>
+								<th th:text="#{module.moment}"></th>
+								<th th:text="#{module.coursCode}"></th>
+								<th th:text="#{actionsCRUD}"></th>
+							</tr>
+						</thead>
+
+						<tbody >
+							<tr th:each="module: ${modulesList}" >
+								<td th:text="${module.code}"></td>
+								<td th:text="${#temporals.format(module.dateDebut)}"></td>
+								<td th:text="${#temporals.format(module.dateFin)}"></td>
+								<td th:text="${module.moment}"></td>
+								<td th:text="${module.cours.code}"></td>
+								<td>			
+									<a th:href="@{'/seance/liste_seance/__${module.code}__'}"> 
+										<i class="fa fa-sticky-note text-primary"></i>
+									</a>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div th:unless="${!modulesList.isEmpty()}" th:text="#{module.aucun}">
+					La liste de module est vide
+				</div>
+			</div>
+		</div>
+	</main>
+	<div layout:fragment="optional">
+	  <script th:src="@{/webjars/bootbox/bootbox.js}"></script>
+	  <script th:src="@{/js/myJS.js}"></script>
+	  <script type="text/javascript" th:inline="javascript">	
+       /*<![CDATA[*/
+       function validationPost(lien){
+		var csrf={};
+		csrf[ /*[[${#ctx.containsVariable('_csrf')}? ${_csrf.parameterName}:'_csrf']]*/ '_csrf' ] = /*[[${#ctx.containsVariable('_csrf')}?${_csrf.getToken()}:'']]*/ 'vide';
+		bootbox.confirm(/*[[#{msgConfirmDelete}]]*/ 'Sure?',
+				function(ok){
+					if (ok){ post(lien,csrf);}
+				})
+		}
+        /*]]>*/					      
+	  </script>
+	</div>
+</body>
+</html>
+

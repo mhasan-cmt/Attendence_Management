@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout}">
+<head>
+<title th:text="#{error.page}">Erreur</title>
+</head>
+<body>
+	<main class="container" layout:fragment="content">
+		<div class="row">
+			<div class="col">
+				<h3 class="text-center bg-danger text-white" th:text="#{error.page}"></h3>
+			</div>
+
+		</div>
+		<div class="row">
+			<div class="col">
+				<table class="table">
+					<thead class="table-warning">
+						<tr>
+							<th scope="col" th:text="#{error.head.element}">Element</th>
+							<th scope="col" th:text="#{error.head.contenu}">Value</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:if="${message}!=null">
+						    <td scope="row">Message</td>
+						    <td th:text="${message}"></td>
+						</tr>
+						<tr th:if="${code}!=null">
+						    <td scope="row">Code</td>
+						    <td th:text="${code}"></td>
+						</tr>
+						<tr th:if="${path}!=null">
+						    <td scope="row">Path</td>
+						    <td th:text="${path}"></td>
+						</tr>
+						<!-- <tr th:if="${informations.message}!=null">
+						    <td scope="row">Message</td>
+						    <td th:text="${informations.message}"></td>
+						</tr>
+						<tr th:if="${informations.code}!=null">
+						    <td scope="row">Code</td>
+						    <td th:text="${informations.code}"></td>
+						</tr>
+						<tr th:if="${informations.path}!=null">
+						    <td scope="row">Path</td>
+						    <td th:text="${informations.path}"></td>
+						</tr> -->
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</main>
+</body>
+</html>

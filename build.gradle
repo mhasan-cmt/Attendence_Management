@@ -1,0 +1,74 @@
+plugins {
+	id 'org.springframework.boot' version '2.7.7'
+	id 'io.spring.dependency-management' version '1.0.14.RELEASE'
+	id 'java'
+	id 'eclipse'
+}
+
+group = 'org.isfce.pid'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '17'
+compileJava.options.encoding = 'UTF-8'
+compileTestJava.options.encoding = 'UTF-8'
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	//Ajout manuel pour pouvoir utiliser les layout en Thymeleaf
+	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
+	
+	//Ajouts pour la sécuritée Spring+Thymeleaf+ librairie passay
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
+	implementation 'org.passay:passay:1.6.+'
+	//Pour tester la securité avec les tests unitaires
+	testImplementation 'org.springframework.security:spring-security-test'
+	
+	//validation
+	implementation 'javax.validation:validation-api:2.0.1.Final'
+	
+	//ajout Lombok	
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+	
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	runtimeOnly 'com.h2database:h2'
+	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+	
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	//Lombok pour les tests via Gradle
+	testCompileOnly 'org.projectlombok:lombok'
+	testAnnotationProcessor 'org.projectlombok:lombok'
+		
+	//WebJar
+	implementation 'org.webjars:bootstrap:4.3.+'
+	implementation 'org.webjars:jquery:3.4.+'
+	implementation 'org.webjars:popper.js:2.9.+'
+	implementation 'org.webjars:font-awesome:6.2.0'
+	implementation 'org.webjars:bootbox:5.4.+'
+	
+	//Pour permettre une utilisation des webjar sans préciser la version
+	//et détecter l'endroit où se trouve les webjar
+	implementation 'org.webjars:webjars-locator:0.36'
+	
+	//Permet de charger les sources et Les javaDocs des dépendances
+    eclipse.classpath.downloadJavadoc = true
+    eclipse.classpath.downloadSources = true
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head >
+<!-- Required meta tags for bootstrap-->
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<title th:text="#{application.titre}"></title>
+<link rel="stylesheet"
+	th:href="@{/webjars/bootstrap/css/bootstrap.min.css/}" />
+<link rel="stylesheet"
+	th:href="@{/webjars/font-awesome/css/font-awesome.min.css}" />
+<link rel="stylesheet" th:href="@{/css/styles.css}" />
+</head>
+<body>
+	
+	<!-- scripts complémentaires pour les pages avec post et boite de confirmation-->
+	<div th:fragment="scriptsPost">
+		<script th:src="@{/webjars/bootbox/bootbox.js}"></script>
+		<script th:src="@{/js/myJS.js}"></script>
+	</div>
+
+	<p th:fragment="message(texte)" th:text="${texte}">un message</p>
+
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org" 
+ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+ layout:decorate="~{layout}"
+ >
+<head >
+<title th:text="#{presence.liste.titre}"> Liste des presences</title>
+</head>
+
+<body>
+	<main class="container" layout:fragment="content">
+
+		<div class="row">
+			<div class="col">
+				<h3 th:text="#{presence.liste.titre}"></h3>
+			</div>
+		</div>
+		
+		<div class="row" sec:authorize="hasAnyRole('PROF')">
+			<div class="col">
+				<div th:if="${presencesWrapper.getPresences() != null and !presencesWrapper.getPresences().isEmpty()}">
+					<div style="display:flex;justify-content: space-between">
+						<h5 th:text="${module_code}"></h5>
+						<h5 th:text="${seance_date}"></h5>
+					</div>
+					<form th:action="@{/seance/updatePresence}" th:object="${presencesWrapper}" method="post">
+					<table class="table">
+						<thead>
+						<tr>
+
+							<th th:text="#{presence.etudiant}"></th>
+							<th th:text="#{presence.cm}"></th>
+							<th th:text="#{presence.nature}"></th>
+						</tr>
+						</thead>
+							<tbody >
+								<tr th:each="p,itemstat : *{presences}">
+									<input type="hidden" th:field="*{presences[__${itemstat.index}__].id}"/>
+									<input type="hidden" th:field="*{presences[__${itemstat.index}__].seance.id}"/>
+									<td th:text="${p.etudiant.user.username}">
+									</td>
+									<td>
+										<input type="checkbox" readonly="readonly" disabled="disabled"
+											   th:checked="${p.etatCM}"/>
+									</td>
+									<td>
+										<select th:name="status"
+												th:field="*{presences[__${itemstat.index}__].status}" th:disabled="${p.seance.cloturer || p.isEtatCM()}">
+											<option th:each="stat: ${statusList}"
+													th:value="${stat.value}"
+													th:text="${stat.key}"
+													th:selected="${stat.value == p.status}"></option>
+										</select>
+										</select>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+								<button type="submit">Update</button>
+							</form>
+					<form method="post" th:action="@{/seance/cloturer}">
+						<input type="hidden" name="ids" th:value="${seance.id}"/>
+					    <button type="submit">Clôturer la session</button>
+					</form>
+				</div>
+				<div th:if="${presencesWrapper == null}" th:text="#{presence.aucun}">
+					La liste de presence est vide
+				</div>
+			</div>
+		</div>
+	</main>
+	<div layout:fragment="optional">
+	  <script th:src="@{/webjars/bootbox/bootbox.js}"></script>
+	  <!--script th:src="@{/js/myJS.js}"></script-->
+	  <script type="text/javascript" th:inline="javascript">	
+       /*<![CDATA[*/
+       function validationPost(lien){
+		var csrf={};
+		csrf[ /*[[${#ctx.containsVariable('_csrf')}? ${_csrf.parameterName}:'_csrf']]*/ '_csrf' ] = /*[[${#ctx.containsVariable('_csrf')}?${_csrf.getToken()}:'']]*/ 'vide';
+		bootbox.confirm(/*[[#{msgConfirmDelete}]]*/ 'Sure?',
+				function(ok){
+					if (ok){ post(lien,csrf);}
+				})
+		}
+        /*]]>*/					      
+	  </script>
+	</div>
+</body>
+</html>
+

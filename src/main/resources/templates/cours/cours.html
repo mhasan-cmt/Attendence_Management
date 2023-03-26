@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+ 	layout:decorate="~{layout}">
+<head>
+<title th:text="#{cours.detail.titre}">Détail du cours</title>
+</head>
+
+<body>
+	
+	<main class="container" layout:fragment="content">
+		<div class="row">
+			<div class="col-1">
+				<a th:href="@{/cours/liste}"><i class="fa fa-chevron-left"></i></a>
+			</div>
+			<div class="col-11">
+				<h3 th:text="#{cours.detail.titre}">Titre</h3>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-4" th:text="#{cours.code}">Code</div>
+
+
+			<div class="col-8" th:text="${cours.code}">Valeur</div>
+
+		</div>
+
+		<div class="row">
+			<div class="col-4" th:text="#{cours.nom}">Nom</div>
+
+			<div class="col-8" th:text="${cours.nom}">Valeur</div>
+
+		</div>
+		<div class="row">
+			<div class="col-4"
+				th:text="#{cours.nbSections}+' : '+${#sets.size(cours.sections)}">NbSections</div>
+
+			<div class="col-8"
+				th:text="'( '+${#strings.setJoin(cours.sections,' , ')+' )'}">Valeur</div>
+		</div>
+
+
+		<div class="row">
+			<div class="col p-2 text-left">
+				<a class="btn btn-outline-success"
+					th:href="@{|/cours/${cours.code}/update|}"
+					th:text="#{action.update}"></a>
+			</div>
+		</div>
+	</main>
+
+</body>
+</html>
