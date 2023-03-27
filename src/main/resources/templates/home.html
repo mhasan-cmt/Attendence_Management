@@ -19,8 +19,8 @@
 	</h1>
 	<h2 th:text="#{home.titre}">un titre</h2>
 
-	<a th:href="@{/cours/liste}">Liste des cours</a><br/>
-	<a sec:authorize="hasAnyRole('PROF')" th:href="@{/seance/liste/__${username}__}">Prendre les présences </a>
+	<a th:href="@{/cours/liste}" sec:authorize="hasAnyRole('ADMIN', 'PROF')">Liste des cours</a><br/>
+	<a sec:authorize="hasRole('PROF')" th:href="@{/seance/liste/__${username}__}">Prendre les présences </a>
 	<a sec:authorize="hasAnyRole('ADMIN', 'SECRETARIAT')" th:href="@{/certificat/add}">Encoder un CM</a>
 	
 	<p>

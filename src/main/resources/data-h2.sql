@@ -22,6 +22,7 @@ insert  into TSECTION(FKCOURS,SECTION) values('ISO2','Informatique');
 ('admin','$2a$10$BR98DmjHecYVdqtNz3UGcuyFop/ed0KfxOEAp1bdVXh8eF2iAfOz.','0' ),
 ('vo', '$2a$10$WvAj8iSJyIxDQWHysC4o6usLkzKW5bi9GThqYH2X/w/vVAm18nWcq','1'),
 ('wa','$2a$10$ZZ4U5deuZBQqp/BNmKrG1e6OqiRwmaAfu.aaQfgBI9ehImH8AYZKC','1'),
+('sa','$2a$10$BR98DmjHecYVdqtNz3UGcuyFop/ed0KfxOEAp1bdVXh8eF2iAfOz.','3'),
 ('sh','$2a$10$PdX74d5AzJN/OVU3bP1XbO3fLSfr6x3oKC81rbiUAlSEE6DcID986',1),
 ('et1','$2a$10$N8pzEKs1350SPT1vpomUo.zMEV1IR/LjXgOrBJ.QaeddZtKLVxR4q',2),
 ('et2','$2a$10$.Tlzs3a.2PEGK1gckhgaJuz4SWW2J1lWBf.4E3rOleziGDpExtp1W',2),
