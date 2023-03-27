@@ -131,13 +131,17 @@ public class CertificateController {
         		errors.rejectValue("nomDocteur", "certificatdto.nomDocteur.notvalid", "NOM DOCTEUR ERROR(le nom du docteur ne peut ni etre vide ni contenir uniquement des espaces)");
         		return "certificat/addCertificat";
         	}
+			if(etudiant.get().getPresences()!=null){
         	certificateService.insert(certificat.toCertificate(etudiant.get()));
-			etudiant.get().getPresences().forEach(presence -> {
-				presence.setEtatCM(true);
-				presence.setStatus(Presence.PresenceStatus.AJ);
-			});
+			if (etudiant.get().getPresences()!=null){
+				etudiant.get().getPresences().forEach(presence -> {
+					presence.setEtatCM(true);
+					presence.setStatus(Presence.PresenceStatus.AJ);
+				});
+			}
 			etudiantService.save(etudiant.get());
-        	
+			}
+
             return "redirect:/";
     	}
     	return "certificat/addCertificat";

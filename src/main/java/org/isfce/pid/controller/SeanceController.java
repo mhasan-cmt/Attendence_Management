@@ -15,12 +15,9 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.isfce.pid.dto.PresenceWrapperDto;
-import org.isfce.pid.service.CoursServices;
-import org.isfce.pid.service.EtudiantService;
-import org.isfce.pid.service.ModuleServices;
-import org.isfce.pid.service.PresenceService;
-import org.isfce.pid.service.ProfesseurServices;
-import org.isfce.pid.service.SeanceServices;
+import org.isfce.pid.model.*;
+import org.isfce.pid.model.Module;
+import org.isfce.pid.service.*;
 import org.isfce.pid.util.validation.LocalDateEditor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -43,14 +40,8 @@ import org.hibernate.SessionFactory;
 import org.isfce.pid.controller.dto.CoursDto;
 import org.isfce.pid.controller.dto.PresenceDto;
 import org.isfce.pid.controller.dto.SeanceDto;
-import org.isfce.pid.model.Etudiant;
-import org.isfce.pid.model.Inscription;
-import org.isfce.pid.model.Module;
-import org.isfce.pid.model.Seance;
 import org.isfce.pid.model.Module.MAS;
-import org.isfce.pid.model.Presence;
 import org.isfce.pid.model.Presence.PresenceStatus;
-import org.isfce.pid.model.PresenceWrapper;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -60,6 +51,8 @@ import lombok.extern.slf4j.Slf4j;
 public class SeanceController {
     @Autowired
     private SeanceServices seanceService;
+    @Autowired
+    private CertificatServices certificateService;
 	  
 	/*@Autowired 
 	private CoursServices coursService;
@@ -205,8 +198,13 @@ public class SeanceController {
 
         for (Etudiant etudiant : module.get().getEtudiants()) {
             Presence presence = new Presence(null, PresenceStatus.A, etudiant, s, false);
+            Optional<Certificat> certificat = certificateService.findByEtudiantId(etudiant.getId());
+            if (certificat.isPresent()) {
+                presence.setEtatCM(true);
+                presence.setStatus(PresenceStatus.AJ);
+            }
             log.info("Insertion de la presence debut <:> " + seance);
-            presence = presenceService.insert(presence);
+            presenceService.insert(presence);
             log.info("Insertion de la presence fin <:> " + seance);
         }
 

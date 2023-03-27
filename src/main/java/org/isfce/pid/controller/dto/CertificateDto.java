@@ -16,6 +16,7 @@ import org.isfce.pid.model.Etudiant;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.isfce.pid.model.Presence;
 
 @Data
 @AllArgsConstructor
