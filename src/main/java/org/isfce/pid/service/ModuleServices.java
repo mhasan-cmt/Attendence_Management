@@ -86,8 +86,10 @@ public class ModuleServices {
 	
 	@Transactional 
 	public List<Module>  getModulesProf(String username){
-		return this.moduleJpaDao.getModuleProfesseur(username);
+		return this.moduleJpaDao.findModuleByProfesseur_User_Username(username);
 	}
+
+
 
 	/**
 	 * Ajout d'un nouveau cours

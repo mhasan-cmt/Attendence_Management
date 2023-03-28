@@ -28,6 +28,8 @@ public interface IModuleJpaDao extends JpaRepository<Module, String> {
 	
 	@Query("from TMODULE m join fetch m.inscriptions i where m.professeur.user.username=?1 order by m.code")
 	List<Module> getModuleProfesseur(String username);
+
+	List<Module> findModuleByProfesseur_User_Username(String username);
 	
 	List<Module> findModuleByProfesseurOrderByCode(Professeur professeur);
 	
